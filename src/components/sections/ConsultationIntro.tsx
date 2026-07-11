@@ -21,6 +21,9 @@ export function ConsultationIntro() {
           <p className="mx-auto mt-10 max-w-lg text-base leading-[1.9] text-charcoal-muted">
             {consultationIntroContent.description}
           </p>
+          <p className="mx-auto mt-6 max-w-lg text-sm leading-[1.8] text-charcoal-faint">
+            {consultationIntroContent.serviceScopeNotice}
+          </p>
         </Reveal>
       </div>
     </Section>

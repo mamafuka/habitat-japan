@@ -4,7 +4,8 @@ export const siteConfig = {
   description:
     "Luxury relocation support for international residents moving to Tokyo.",
   url: "https://habitat-japan.com",
-  email: "hello@habitat-japan.com",
+  /** Internal recipient for consultation form delivery — not displayed publicly. */
+  formRecipientEmail: "hello@habitat-japan.com",
   seoTitle: "Habitat Tokyo | Luxury Relocation Concierge",
 };
 
@@ -16,10 +17,11 @@ export const navigation = [
   { label: "Consultation", href: "#contact" },
 ];
 
-export const footerLegalLinks = [
-  { label: "Privacy Policy", href: "/privacy" },
-  { label: "Disclaimer", href: "/disclaimer" },
-] as const;
+/** Consultation form only — not linked in public navigation. */
+export const legalPageUrls = {
+  privacy: "/legal/privacy-2026",
+  disclaimer: "/legal/disclaimer-2026",
+} as const;
 
 export const heroContent = {
   headline: ["Tokyo can become", "your home."],
@@ -37,8 +39,8 @@ export const aboutContent = {
   eyebrow: "About",
   title: "A quieter way to arrive.",
   paragraphs: [
-    "Habitat is a private relocation concierge for those beginning life in Tokyo. Not a portal. Not an agency.",
-    "From Minami-Azabu to Daikanyama, we guide every detail — residences, contracts, the rhythm of a new city.",
+    "Habitat is a private relocation concierge for those beginning life in Tokyo. Not a portal. Not a brokerage.",
+    "From Minami-Azabu to Daikanyama, we assist with relocation planning and housing search support — coordinating with licensed professionals where regulated services are required.",
     "One point of contact. Complete discretion. Tokyo, personally considered.",
   ],
 };
@@ -52,7 +54,7 @@ export const supportContent = {
       number: "01",
       title: "Private Residence",
       description:
-        "Personally selected homes across Minato, Azabu, Hiroo, and Aoyama. Viewings, requirements, and communication — handled quietly.",
+        "Housing search support across Minato, Azabu, Hiroo, and Aoyama — preferences, requirements, and communication handled with discretion.",
     },
     {
       number: "02",
@@ -90,9 +92,9 @@ export const processContent = {
         "A personal discussion to understand your relocation before any recommendation is prepared.",
     },
     {
-      title: "Property Selection",
+      title: "Housing Search",
       description:
-        "Residences considered against your preferences — neighbourhood, space, and the rhythm of your days.",
+        "Residences considered against your preferences with housing search support — neighbourhood, space, and the rhythm of your days.",
     },
     {
       title: "Viewing",
@@ -117,79 +119,12 @@ export const processContent = {
   ],
 };
 
-export const tokyoCollectionContent = {
-  eyebrow: "Tokyo Collection",
-  title: "Discover the neighborhoods that define modern Tokyo.",
-  description:
-    "Each district offers a different rhythm of life. From quiet residential streets to international business hubs, we help you find the place that truly feels like home.",
-  locations: [
-    {
-      name: "Roppongi",
-      lines: [
-        "International energy, fine dining,",
-        "private residences and nightlife.",
-      ],
-      image: "/images/hero-tokyo.png",
-      imagePosition: "72% 38%",
-    },
-    {
-      name: "Azabudai Hills",
-      lines: [
-        "Tokyo's newest luxury address,",
-        "where modern architecture meets calm living.",
-      ],
-      image: "/testimonial-bg.jpg",
-      imagePosition: "50% 40%",
-    },
-    {
-      name: "Hiroo",
-      lines: [
-        "Tree-lined streets,",
-        "international schools,",
-        "cafés and quiet elegance.",
-      ],
-      image: "/testimonial-bg.jpg",
-      imagePosition: "30% 55%",
-    },
-    {
-      name: "Aoyama",
-      lines: [
-        "Design,",
-        "fashion,",
-        "art galleries,",
-        "timeless sophistication.",
-      ],
-      image: "/images/hero-tokyo.png",
-      imagePosition: "48% 42%",
-    },
-    {
-      name: "Daikanyama",
-      lines: [
-        "Boutique living,",
-        "independent cafés,",
-        "creative culture.",
-      ],
-      image: "/testimonial-bg.jpg",
-      imagePosition: "65% 30%",
-    },
-    {
-      name: "Shibuya",
-      lines: [
-        "The modern heart of Tokyo,",
-        "where business,",
-        "technology",
-        "and culture intersect.",
-      ],
-      image: "/images/hero-tokyo.png",
-      imagePosition: "58% 25%",
-    },
-  ],
-};
-
 export const consultationIntroContent = {
   title: "Private Consultation",
   description:
     "Every relocation begins with understanding your lifestyle. Complete this short consultation request and we will prepare a personalized recommendation before our first conversation.",
+  serviceScopeNotice:
+    "Habitat Tokyo assists clients with relocation planning and housing search support, and coordinates with appropriately licensed real estate professionals where regulated services are required.",
 };
 
 export const moveTimelineOptions = [
@@ -329,21 +264,8 @@ export const bedroomOptions = ["Studio", "1", "2", "3", "4+"] as const;
 
 export const contactContent = {
   submitLabel: "Request Private Consultation",
-  successTitle: "Thank you.",
-  successMessage:
-    "We've received your inquiry. A relocation advisor will contact you within 24 hours.",
-  contactMethods: [
-    {
-      label: "WhatsApp",
-      note: "WhatsApp URL to be configured before launch",
-      href: null,
-    },
-    {
-      label: "Email",
-      note: "Production contact email to be configured before launch",
-      href: null,
-    },
-  ],
+  consentNotice:
+    "Submitting this form does not guarantee property availability, lease approval, visa approval, or acceptance of an engagement.",
 };
 
 export const tokyoPhilosophyContent = {
@@ -357,7 +279,7 @@ export const faqContent = {
     {
       question: "What is Habitat?",
       answer:
-        "A private relocation concierge for those building a life in Tokyo — not a property portal, not a brokerage.",
+        "An independent relocation concierge offering consultation and housing search support — not a property portal, not a licensed real estate brokerage.",
     },
     {
       question: "Who do you serve?",
@@ -382,10 +304,6 @@ export const faqContent = {
   ],
 };
 
-export const legalNotice =
-  "Real estate brokerage, lease mediation, and other regulated real estate services are provided by appropriately licensed partner companies where required. Habitat provides customer coordination, language support, and relocation assistance according to the agreed service scope.";
-
 export const footerContent = {
-  tagline: "Private relocation concierge for life in Tokyo.",
   copyright: "© 2026 Habitat Tokyo",
 };

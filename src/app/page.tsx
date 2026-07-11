@@ -9,7 +9,6 @@ import { Hero } from "@/components/sections/Hero";
 import { Process } from "@/components/sections/Process";
 import { Statement } from "@/components/sections/Statement";
 import { Support } from "@/components/sections/Support";
-import { TokyoCollection } from "@/components/sections/TokyoCollection";
 import { TokyoPhilosophy } from "@/components/sections/TokyoPhilosophy";
 
 export default function Home() {
@@ -21,7 +20,6 @@ export default function Home() {
         <Hero />
         <About />
         <Support />
-        <TokyoCollection />
         <Statement />
         <Process />
         <TokyoPhilosophy />

@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import {
   contactContent,
+  legalPageUrls,
   monthlyBudgetOptions,
   moveTimelineOptions,
   preferredAreaOptions,
@@ -86,10 +87,40 @@ function validate(data: FormData): FormErrors {
   return errors;
 }
 
+function buildMessage(data: FormData): string {
+  const areas = data.preferredAreas.includes("Other")
+    ? [
+        ...data.preferredAreas.filter((area) => area !== "Other"),
+        data.preferredAreaOther.trim(),
+      ]
+        .filter(Boolean)
+        .join(", ")
+    : data.preferredAreas.join(", ");
+
+  const lines = [
+    `Nationality: ${data.nationality}`,
+    `Current Country: ${data.currentCountry}`,
+    `Move Timeline: ${data.moveTimeline}`,
+    `Purpose: ${data.purpose}`,
+    `Visa Status: ${data.visaStatus}`,
+    `Preferred Areas: ${areas}`,
+    `Monthly Budget: ${data.monthlyBudget}`,
+  ];
+
+  if (data.additionalNotes.trim()) {
+    lines.push(`Additional Notes:\n${data.additionalNotes.trim()}`);
+  }
+
+  return lines.join("\n");
+}
+
 export function Contact() {
   const [form, setForm] = useState<FormData>(initialForm);
   const [errors, setErrors] = useState<FormErrors>({});
-  const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">(
+    "idle",
+  );
 
   const updateField = <K extends keyof FormData>(
     key: K,
@@ -105,19 +136,53 @@ export function Contact() {
     }
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const validationErrors = validate(form);
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      setSubmitted(false);
       return;
     }
 
     setErrors({});
-    setSubmitted(true);
+    setSubmitStatus("idle");
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: `${form.firstName} ${form.lastName}`.trim(),
+          email: form.email.trim(),
+          message: buildMessage(form),
+        }),
+      });
+
+      if (!response.ok) {
+        setSubmitStatus("error");
+        return;
+      }
+
+      const result = (await response.json()) as { success?: boolean };
+
+      if (!result.success) {
+        setSubmitStatus("error");
+        return;
+      }
+
+      setSubmitStatus("success");
+      setForm(initialForm);
+    } catch {
+      setSubmitStatus("error");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  const legalLinkClass =
+    "text-ivory/60 underline decoration-ivory/20 underline-offset-2 transition-opacity duration-700 hover:opacity-80 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-ivory/50";
 
   return (
     <Section
@@ -127,21 +192,7 @@ export function Contact() {
     >
       <div className="mx-auto max-w-2xl">
         <Reveal>
-          {submitted ? (
-            <div role="status">
-              <p className="font-serif text-3xl font-light tracking-[-0.02em] text-ivory sm:text-4xl">
-                {contactContent.successTitle}
-              </p>
-              <p className="mt-6 text-base leading-[1.8] text-ivory/70">
-                {contactContent.successMessage}
-              </p>
-            </div>
-          ) : (
-            <form
-              className="space-y-12"
-              onSubmit={handleSubmit}
-              noValidate
-            >
+          <form className="space-y-12" onSubmit={handleSubmit} noValidate>
               <FormSection number="01" title="About You">
                 <div className="grid gap-8 sm:grid-cols-2">
                   <div>
@@ -394,19 +445,19 @@ export function Contact() {
                   <span className="text-xs leading-[1.7] text-ivory/40">
                     I have read and agree to the{" "}
                     <a
-                      href="/privacy"
+                      href={legalPageUrls.privacy}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-ivory/60 underline decoration-ivory/20 underline-offset-2"
+                      className={legalLinkClass}
                     >
                       Privacy Policy
                     </a>{" "}
                     and{" "}
                     <a
-                      href="/disclaimer"
+                      href={legalPageUrls.disclaimer}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-ivory/60 underline decoration-ivory/20 underline-offset-2"
+                      className={legalLinkClass}
                     >
                       Disclaimer
                     </a>
@@ -417,6 +468,9 @@ export function Contact() {
                   id="privacyConsent-error"
                   message={errors.privacyConsent}
                 />
+                <p className="mt-4 text-xs leading-[1.7] text-ivory/35">
+                  {contactContent.consentNotice}
+                </p>
               </div>
 
               <div className="pt-2">
@@ -424,31 +478,23 @@ export function Contact() {
                   type="submit"
                   size="large"
                   variant="secondary"
-                  disabled={!form.privacyConsent}
+                  disabled={!form.privacyConsent || isSubmitting}
                   className="border-ivory/25 text-ivory hover:border-ivory/50 hover:bg-transparent"
                 >
-                  {contactContent.submitLabel}
+                  {isSubmitting ? "Sending..." : contactContent.submitLabel}
                 </Button>
+                {submitStatus === "success" && (
+                  <p className="mt-4 text-xs leading-[1.7] text-ivory/60">
+                    Thank you. Your inquiry has been sent successfully.
+                  </p>
+                )}
+                {submitStatus === "error" && (
+                  <p className="mt-4 text-xs leading-[1.7] text-ivory/60">
+                    Failed to send. Please try again.
+                  </p>
+                )}
               </div>
             </form>
-          )}
-        </Reveal>
-
-        <Reveal delay={0.3}>
-          <div className="mt-16 border-t border-ivory/8 pt-10">
-            <div className="flex flex-col gap-6 sm:flex-row sm:gap-12">
-              {contactContent.contactMethods.map((method) => (
-                <div key={method.label} className="text-xs">
-                  <span className="tracking-[0.15em] text-ivory/40 uppercase">
-                    {method.label}
-                  </span>
-                  <span className="mt-1 block text-ivory/25">
-                    {method.note}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
         </Reveal>
       </div>
     </Section>

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -18,6 +19,12 @@ const sizeMap = {
   lg: { full: "h-12", mark: "h-10" },
 } as const;
 
+const dimensionMap = {
+  sm: { full: { width: 140, height: 36 }, mark: { width: 32, height: 32 } },
+  md: { full: { width: 156, height: 40 }, mark: { width: 36, height: 36 } },
+  lg: { full: { width: 188, height: 48 }, mark: { width: 40, height: 40 } },
+} as const;
+
 export function Logo({
   variant = "full",
   theme = "light",
@@ -26,6 +33,7 @@ export function Logo({
   href = "/",
 }: LogoProps) {
   const dimensions = sizeMap[size];
+  const pixelDimensions = dimensionMap[size];
   const isMonogram = variant === "monogram";
 
   const src = isMonogram
@@ -34,10 +42,15 @@ export function Logo({
       ? "/logo/logo-dark.svg"
       : "/logo/logo.svg";
 
+  const { width, height } = isMonogram ? pixelDimensions.mark : pixelDimensions.full;
+
   const content = (
-    <img
+    <Image
       src={src}
       alt=""
+      width={width}
+      height={height}
+      unoptimized
       className={cn(
         "w-auto shrink-0",
         isMonogram ? dimensions.mark : dimensions.full,

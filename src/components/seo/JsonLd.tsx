@@ -7,7 +7,6 @@ export function JsonLd() {
     name: siteConfig.name,
     description: siteConfig.description,
     url: siteConfig.url,
-    email: siteConfig.email,
     areaServed: "Tokyo, Japan",
     serviceType: "Private relocation concierge for international residents",
   };
