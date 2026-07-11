@@ -5,6 +5,7 @@ import { Section } from "@/components/ui/Section";
 export function ConsultationIntro() {
   return (
     <Section
+      id="consultation"
       background="warm-white"
       className="!py-[clamp(6rem,14vw,12rem)]"
     >

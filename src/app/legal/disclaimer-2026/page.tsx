@@ -1,6 +1,6 @@
 import { LegalPage, LegalSection } from "@/components/layout/LegalPage";
-import { siteConfig } from "@/components/content/site";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 const canonicalPath = "/legal/disclaimer-2026";
 
@@ -71,12 +71,12 @@ export default function DisclaimerPage() {
         </p>
         <p>Please contact us through the consultation form.</p>
         <p>
-          <a
-            href={`${siteConfig.url}/#contact`}
+          <Link
+            href="/#consultation"
             className="text-charcoal underline decoration-charcoal/20 underline-offset-4 transition-colors duration-700 hover:text-charcoal-muted"
           >
             Return to consultation form
-          </a>
+          </Link>
         </p>
       </LegalSection>
     </LegalPage>
