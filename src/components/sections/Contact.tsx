@@ -1,100 +1,109 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { contactContent } from "@/components/content/site";
+import {
+  contactContent,
+  monthlyBudgetOptions,
+  moveTimelineOptions,
+  preferredAreaOptions,
+  relocationPurposeOptions,
+  visaStatusOptions,
+} from "@/components/content/site";
 import { Reveal } from "@/components/motion/Reveal";
 import { Button } from "@/components/ui/Button";
+import {
+  FieldError,
+  FieldLabel,
+  FormSection,
+  inputClass,
+  RadioGroup,
+  TagSelect,
+} from "@/components/ui/FormField";
 import { Section } from "@/components/ui/Section";
 import { cn } from "@/lib/utils";
 
 interface FormData {
-  fullName: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  contactMethod: string;
-  country: string;
-  moveInPeriod: string;
-  preferredArea: string;
-  rentBudget: string;
-  message: string;
+  nationality: string;
+  currentCountry: string;
+  moveTimeline: string;
+  purpose: string;
+  visaStatus: string;
+  preferredAreas: string[];
+  preferredAreaOther: string;
+  monthlyBudget: string;
+  additionalNotes: string;
   privacyConsent: boolean;
 }
 
-interface FormErrors {
-  fullName?: string;
-  email?: string;
-  contactMethod?: string;
-  country?: string;
-  moveInPeriod?: string;
-  preferredArea?: string;
-  rentBudget?: string;
-  message?: string;
-  privacyConsent?: string;
-}
-
-const contactMethods = ["Email", "WhatsApp", "LINE", "Video consultation"];
+type FormErrors = Partial<Record<keyof FormData, string>>;
 
 const initialForm: FormData = {
-  fullName: "",
+  firstName: "",
+  lastName: "",
   email: "",
-  contactMethod: "",
-  country: "",
-  moveInPeriod: "",
-  preferredArea: "",
-  rentBudget: "",
-  message: "",
+  nationality: "",
+  currentCountry: "",
+  moveTimeline: "",
+  purpose: "",
+  visaStatus: "",
+  preferredAreas: [],
+  preferredAreaOther: "",
+  monthlyBudget: "",
+  additionalNotes: "",
   privacyConsent: false,
 };
 
 function validate(data: FormData): FormErrors {
   const errors: FormErrors = {};
 
-  if (!data.fullName.trim()) errors.fullName = "Required.";
+  if (!data.firstName.trim()) errors.firstName = "Required.";
+  if (!data.lastName.trim()) errors.lastName = "Required.";
   if (!data.email.trim()) {
     errors.email = "Required.";
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
     errors.email = "Enter a valid email.";
   }
-  if (!data.contactMethod) errors.contactMethod = "Required.";
-  if (!data.country.trim()) errors.country = "Required.";
-  if (!data.moveInPeriod.trim()) errors.moveInPeriod = "Required.";
-  if (!data.preferredArea.trim()) errors.preferredArea = "Required.";
-  if (!data.rentBudget.trim()) errors.rentBudget = "Required.";
-  if (!data.message.trim()) errors.message = "Required.";
+  if (!data.nationality.trim()) errors.nationality = "Required.";
+  if (!data.currentCountry.trim()) errors.currentCountry = "Required.";
+  if (!data.moveTimeline) errors.moveTimeline = "Required.";
+  if (!data.purpose) errors.purpose = "Required.";
+  if (!data.visaStatus) errors.visaStatus = "Required.";
+  if (data.preferredAreas.length === 0) {
+    errors.preferredAreas = "Select at least one area.";
+  }
+  if (
+    data.preferredAreas.includes("Other") &&
+    !data.preferredAreaOther.trim()
+  ) {
+    errors.preferredAreaOther = "Required.";
+  }
+  if (!data.monthlyBudget) errors.monthlyBudget = "Required.";
   if (!data.privacyConsent) errors.privacyConsent = "Required.";
 
   return errors;
-}
-
-function FieldLabel({
-  htmlFor,
-  children,
-}: {
-  htmlFor: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <label
-      htmlFor={htmlFor}
-      className="text-[0.6875rem] tracking-[0.2em] text-ivory/50 uppercase"
-    >
-      {children}
-    </label>
-  );
-}
-
-function FieldError({ id, message }: { id: string; message?: string }) {
-  if (!message) return null;
-  return (
-    <p id={id} className="mt-2 text-xs text-gold/80" role="alert">
-      {message}
-    </p>
-  );
 }
 
 export function Contact() {
   const [form, setForm] = useState<FormData>(initialForm);
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitted, setSubmitted] = useState(false);
+
+  const updateField = <K extends keyof FormData>(
+    key: K,
+    value: FormData[K],
+  ) => {
+    setForm((prev) => ({ ...prev, [key]: value }));
+    if (errors[key]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[key];
+        return next;
+      });
+    }
+  };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -110,212 +119,257 @@ export function Contact() {
     setSubmitted(true);
   };
 
-  const updateField = <K extends keyof FormData>(
-    key: K,
-    value: FormData[K],
-  ) => {
-    setForm((prev) => ({ ...prev, [key]: value }));
-    if (errors[key as keyof FormErrors]) {
-      setErrors((prev) => {
-        const next = { ...prev };
-        delete next[key as keyof FormErrors];
-        return next;
-      });
-    }
-  };
-
-  const inputClass = cn(
-    "mt-3 w-full border-0 border-b border-ivory/15 bg-transparent px-0 py-3",
-    "text-base text-ivory placeholder:text-ivory/25",
-    "transition-colors duration-700 focus:border-ivory/40 focus:outline-none",
-  );
-
   return (
     <Section
       id="contact"
       background="charcoal"
-      className="!py-[clamp(7rem,16vw,14rem)]"
+      className="!py-[clamp(5rem,12vw,10rem)]"
     >
-      <div className="mx-auto max-w-xl">
+      <div className="mx-auto max-w-2xl">
         <Reveal>
-          <p className="text-[0.6875rem] tracking-[0.28em] text-gold/70 uppercase">
-            {contactContent.eyebrow}
-          </p>
-        </Reveal>
-        <Reveal delay={0.15}>
-          <h2 className="mt-8 font-serif text-4xl font-light leading-[1.1] tracking-[-0.02em] text-ivory sm:text-5xl lg:text-[3.5rem]">
-            {contactContent.title}
-          </h2>
-        </Reveal>
-        <Reveal delay={0.25}>
-          <p className="mt-10 text-base leading-[1.9] text-ivory/55">
-            {contactContent.description}
-          </p>
-        </Reveal>
-
-        <Reveal delay={0.35}>
           {submitted ? (
-            <p className="mt-16 text-base leading-[1.8] text-ivory/70" role="status">
+            <p className="text-base leading-[1.8] text-ivory/70" role="status">
               {contactContent.successMessage}
             </p>
           ) : (
             <form
-              className="mt-16 space-y-10"
+              className="space-y-12"
               onSubmit={handleSubmit}
               noValidate
             >
-              <div>
-                <FieldLabel htmlFor="fullName">Name</FieldLabel>
-                <input
-                  id="fullName"
-                  name="fullName"
-                  type="text"
-                  autoComplete="name"
-                  className={inputClass}
-                  value={form.fullName}
-                  onChange={(e) => updateField("fullName", e.target.value)}
-                  aria-invalid={!!errors.fullName}
-                  aria-describedby={errors.fullName ? "fullName-error" : undefined}
-                />
-                <FieldError id="fullName-error" message={errors.fullName} />
-              </div>
-
-              <div>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  className={inputClass}
-                  value={form.email}
-                  onChange={(e) => updateField("email", e.target.value)}
-                  aria-invalid={!!errors.email}
-                  aria-describedby={errors.email ? "email-error" : undefined}
-                />
-                <FieldError id="email-error" message={errors.email} />
-              </div>
-
-              <div>
-                <FieldLabel htmlFor="contactMethod">Preferred contact</FieldLabel>
-                <select
-                  id="contactMethod"
-                  name="contactMethod"
-                  className={cn(inputClass, "appearance-none")}
-                  value={form.contactMethod}
-                  onChange={(e) => updateField("contactMethod", e.target.value)}
-                  aria-invalid={!!errors.contactMethod}
-                  aria-describedby={
-                    errors.contactMethod ? "contactMethod-error" : undefined
-                  }
-                >
-                  <option value="" className="bg-charcoal">
-                    Select
-                  </option>
-                  {contactMethods.map((method) => (
-                    <option key={method} value={method} className="bg-charcoal">
-                      {method}
-                    </option>
-                  ))}
-                </select>
-                <FieldError
-                  id="contactMethod-error"
-                  message={errors.contactMethod}
-                />
-              </div>
-
-              <div className="grid gap-10 sm:grid-cols-2">
-                <div>
-                  <FieldLabel htmlFor="country">Current location</FieldLabel>
-                  <input
-                    id="country"
-                    name="country"
-                    type="text"
-                    autoComplete="country-name"
-                    className={inputClass}
-                    value={form.country}
-                    onChange={(e) => updateField("country", e.target.value)}
-                    aria-invalid={!!errors.country}
-                    aria-describedby={errors.country ? "country-error" : undefined}
-                  />
-                  <FieldError id="country-error" message={errors.country} />
+              <FormSection number="01" title="About You">
+                <div className="grid gap-8 sm:grid-cols-2">
+                  <div>
+                    <FieldLabel htmlFor="firstName">First Name</FieldLabel>
+                    <input
+                      id="firstName"
+                      name="firstName"
+                      type="text"
+                      autoComplete="given-name"
+                      required
+                      className={inputClass}
+                      value={form.firstName}
+                      onChange={(e) => updateField("firstName", e.target.value)}
+                      aria-invalid={!!errors.firstName}
+                      aria-describedby={
+                        errors.firstName ? "firstName-error" : undefined
+                      }
+                    />
+                    <FieldError id="firstName-error" message={errors.firstName} />
+                  </div>
+                  <div>
+                    <FieldLabel htmlFor="lastName">Last Name</FieldLabel>
+                    <input
+                      id="lastName"
+                      name="lastName"
+                      type="text"
+                      autoComplete="family-name"
+                      required
+                      className={inputClass}
+                      value={form.lastName}
+                      onChange={(e) => updateField("lastName", e.target.value)}
+                      aria-invalid={!!errors.lastName}
+                      aria-describedby={
+                        errors.lastName ? "lastName-error" : undefined
+                      }
+                    />
+                    <FieldError id="lastName-error" message={errors.lastName} />
+                  </div>
                 </div>
+
                 <div>
-                  <FieldLabel htmlFor="moveInPeriod">Arrival</FieldLabel>
+                  <FieldLabel htmlFor="email">Email</FieldLabel>
                   <input
-                    id="moveInPeriod"
-                    name="moveInPeriod"
-                    type="text"
-                    placeholder="e.g. Autumn 2026"
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
                     className={inputClass}
-                    value={form.moveInPeriod}
-                    onChange={(e) => updateField("moveInPeriod", e.target.value)}
-                    aria-invalid={!!errors.moveInPeriod}
-                    aria-describedby={
-                      errors.moveInPeriod ? "moveInPeriod-error" : undefined
-                    }
+                    value={form.email}
+                    onChange={(e) => updateField("email", e.target.value)}
+                    aria-invalid={!!errors.email}
+                    aria-describedby={errors.email ? "email-error" : undefined}
+                  />
+                  <FieldError id="email-error" message={errors.email} />
+                </div>
+
+                <div className="grid gap-8 sm:grid-cols-2">
+                  <div>
+                    <FieldLabel htmlFor="nationality">Nationality</FieldLabel>
+                    <input
+                      id="nationality"
+                      name="nationality"
+                      type="text"
+                      required
+                      className={inputClass}
+                      value={form.nationality}
+                      onChange={(e) =>
+                        updateField("nationality", e.target.value)
+                      }
+                      aria-invalid={!!errors.nationality}
+                      aria-describedby={
+                        errors.nationality ? "nationality-error" : undefined
+                      }
+                    />
+                    <FieldError
+                      id="nationality-error"
+                      message={errors.nationality}
+                    />
+                  </div>
+                  <div>
+                    <FieldLabel htmlFor="currentCountry">
+                      Current Country
+                    </FieldLabel>
+                    <input
+                      id="currentCountry"
+                      name="currentCountry"
+                      type="text"
+                      autoComplete="country-name"
+                      required
+                      className={inputClass}
+                      value={form.currentCountry}
+                      onChange={(e) =>
+                        updateField("currentCountry", e.target.value)
+                      }
+                      aria-invalid={!!errors.currentCountry}
+                      aria-describedby={
+                        errors.currentCountry ? "currentCountry-error" : undefined
+                      }
+                    />
+                    <FieldError
+                      id="currentCountry-error"
+                      message={errors.currentCountry}
+                    />
+                  </div>
+                </div>
+              </FormSection>
+
+              <FormSection number="02" title="Your Move">
+                <div>
+                  <FieldLabel>When are you planning to move?</FieldLabel>
+                  <RadioGroup
+                    name="moveTimeline"
+                    options={moveTimelineOptions}
+                    value={form.moveTimeline}
+                    onChange={(value) => updateField("moveTimeline", value)}
+                    ariaLabel="Move timeline"
                   />
                   <FieldError
-                    id="moveInPeriod-error"
-                    message={errors.moveInPeriod}
+                    id="moveTimeline-error"
+                    message={errors.moveTimeline}
                   />
                 </div>
-              </div>
 
-              <div className="grid gap-10 sm:grid-cols-2">
                 <div>
-                  <FieldLabel htmlFor="preferredArea">Neighbourhood</FieldLabel>
-                  <input
-                    id="preferredArea"
-                    name="preferredArea"
-                    type="text"
-                    placeholder="e.g. Azabu, Hiroo"
-                    className={inputClass}
-                    value={form.preferredArea}
-                    onChange={(e) => updateField("preferredArea", e.target.value)}
-                    aria-invalid={!!errors.preferredArea}
-                    aria-describedby={
-                      errors.preferredArea ? "preferredArea-error" : undefined
-                    }
+                  <FieldLabel>Purpose</FieldLabel>
+                  <RadioGroup
+                    name="purpose"
+                    options={relocationPurposeOptions}
+                    value={form.purpose}
+                    onChange={(value) => updateField("purpose", value)}
+                    ariaLabel="Relocation purpose"
+                  />
+                  <FieldError id="purpose-error" message={errors.purpose} />
+                </div>
+              </FormSection>
+
+              <FormSection number="03" title="Visa">
+                <div>
+                  <FieldLabel>Current Visa Status</FieldLabel>
+                  <RadioGroup
+                    name="visaStatus"
+                    options={visaStatusOptions}
+                    value={form.visaStatus}
+                    onChange={(value) => updateField("visaStatus", value)}
+                    ariaLabel="Current visa status"
+                  />
+                  <FieldError id="visaStatus-error" message={errors.visaStatus} />
+                </div>
+              </FormSection>
+
+              <FormSection number="04" title="Your Home">
+                <div>
+                  <FieldLabel>Preferred Area</FieldLabel>
+                  <TagSelect
+                    options={[...preferredAreaOptions, "Other"]}
+                    selected={form.preferredAreas}
+                    onChange={(value) => {
+                      updateField("preferredAreas", value);
+                      if (!value.includes("Other")) {
+                        updateField("preferredAreaOther", "");
+                      }
+                    }}
+                    ariaLabel="Preferred area"
                   />
                   <FieldError
-                    id="preferredArea-error"
-                    message={errors.preferredArea}
+                    id="preferredAreas-error"
+                    message={errors.preferredAreas}
+                  />
+                  {form.preferredAreas.includes("Other") && (
+                    <div className="mt-8">
+                      <FieldLabel htmlFor="preferredAreaOther">
+                        Preferred Area (Other)
+                      </FieldLabel>
+                      <input
+                        id="preferredAreaOther"
+                        name="preferredAreaOther"
+                        type="text"
+                        placeholder="Please specify your preferred area in Tokyo."
+                        className={inputClass}
+                        value={form.preferredAreaOther}
+                        onChange={(e) =>
+                          updateField("preferredAreaOther", e.target.value)
+                        }
+                        aria-invalid={!!errors.preferredAreaOther}
+                        aria-describedby={
+                          errors.preferredAreaOther
+                            ? "preferredAreaOther-error"
+                            : undefined
+                        }
+                      />
+                      <FieldError
+                        id="preferredAreaOther-error"
+                        message={errors.preferredAreaOther}
+                      />
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <FieldLabel>Monthly Budget</FieldLabel>
+                  <RadioGroup
+                    name="monthlyBudget"
+                    options={monthlyBudgetOptions}
+                    value={form.monthlyBudget}
+                    onChange={(value) => updateField("monthlyBudget", value)}
+                    ariaLabel="Monthly budget"
+                  />
+                  <FieldError
+                    id="monthlyBudget-error"
+                    message={errors.monthlyBudget}
                   />
                 </div>
+              </FormSection>
+
+              <FormSection number="05" title="Anything else?">
                 <div>
-                  <FieldLabel htmlFor="rentBudget">Budget</FieldLabel>
-                  <input
-                    id="rentBudget"
-                    name="rentBudget"
-                    type="text"
-                    placeholder="Monthly rent"
-                    className={inputClass}
-                    value={form.rentBudget}
-                    onChange={(e) => updateField("rentBudget", e.target.value)}
-                    aria-invalid={!!errors.rentBudget}
-                    aria-describedby={
-                      errors.rentBudget ? "rentBudget-error" : undefined
+                  <FieldLabel htmlFor="additionalNotes" optional>
+                    Additional notes
+                  </FieldLabel>
+                  <textarea
+                    id="additionalNotes"
+                    name="additionalNotes"
+                    rows={5}
+                    placeholder="Tell us anything that would help us prepare for your relocation."
+                    className={cn(inputClass, "resize-none")}
+                    value={form.additionalNotes}
+                    onChange={(e) =>
+                      updateField("additionalNotes", e.target.value)
                     }
                   />
-                  <FieldError id="rentBudget-error" message={errors.rentBudget} />
                 </div>
-              </div>
-
-              <div>
-                <FieldLabel htmlFor="message">Message</FieldLabel>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={3}
-                  className={cn(inputClass, "resize-none")}
-                  value={form.message}
-                  onChange={(e) => updateField("message", e.target.value)}
-                  aria-invalid={!!errors.message}
-                  aria-describedby={errors.message ? "message-error" : undefined}
-                />
-                <FieldError id="message-error" message={errors.message} />
-              </div>
+              </FormSection>
 
               <div>
                 <label className="flex items-start gap-3">
@@ -333,8 +387,8 @@ export function Contact() {
                     }
                   />
                   <span className="text-xs leading-[1.7] text-ivory/40">
-                    I understand my information will be used to respond to this
-                    enquiry.{" "}
+                    I understand my information will be used to prepare my
+                    consultation request.{" "}
                     <a
                       href="/privacy"
                       className="text-ivory/60 underline decoration-ivory/20 underline-offset-2"
@@ -349,7 +403,7 @@ export function Contact() {
                 />
               </div>
 
-              <div className="pt-4">
+              <div className="pt-2">
                 <Button
                   type="submit"
                   size="large"
@@ -363,8 +417,8 @@ export function Contact() {
           )}
         </Reveal>
 
-        <Reveal delay={0.5}>
-          <div className="mt-20 border-t border-ivory/8 pt-10">
+        <Reveal delay={0.3}>
+          <div className="mt-16 border-t border-ivory/8 pt-10">
             <div className="flex flex-col gap-6 sm:flex-row sm:gap-12">
               {contactContent.contactMethods.map((method) => (
                 <div key={method.label} className="text-xs">

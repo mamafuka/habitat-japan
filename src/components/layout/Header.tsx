@@ -129,7 +129,7 @@ export function Header() {
             </ul>
             <div className="mt-10">
               <Button href="#contact" className="w-full" onClick={closeMenu}>
-                Private Consultation
+                Request Private Consultation
               </Button>
             </div>
           </motion.nav>

@@ -24,9 +24,6 @@ export function Footer() {
             <p className="mt-8 max-w-xs text-sm leading-[1.8] text-charcoal-muted">
               {footerContent.tagline}
             </p>
-            <p className="mt-8 text-xs leading-relaxed text-charcoal-faint">
-              {footerContent.operatingCompany}
-            </p>
           </div>
 
           <div>

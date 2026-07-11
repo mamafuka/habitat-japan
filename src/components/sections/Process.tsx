@@ -17,20 +17,18 @@ export function Process() {
 
       <div className="relative mx-auto mt-4 max-w-2xl">
         <div
-          className="absolute top-6 bottom-6 left-[1.125rem] w-px bg-border/50 sm:left-[1.375rem]"
+          className="absolute top-10 bottom-10 left-[0.9375rem] w-px bg-border/50 sm:left-[1.1875rem]"
           aria-hidden="true"
         />
 
         <ol className="space-y-0">
-          {processContent.steps.map((step, index) => {
-            const stepNumber = String(index + 1).padStart(2, "0");
-
-            return (
-              <Reveal key={step.title} delay={index * 0.1}>
-                <li className="relative grid grid-cols-[2.75rem_1fr] gap-8 py-10 sm:grid-cols-[3.25rem_1fr] sm:gap-10 sm:py-14">
-                  <span className="font-serif text-2xl font-light text-stone-muted sm:text-3xl">
-                    {stepNumber}
-                  </span>
+          {processContent.steps.map((step, index) => (
+              <Reveal key={step.title} delay={index * 0.08}>
+                <li className="relative grid grid-cols-[2.75rem_1fr] gap-8 py-10 sm:grid-cols-[3.25rem_1fr] sm:gap-10 sm:py-12">
+                  <span
+                    className="mt-2 h-2 w-2 rounded-full bg-gold/50"
+                    aria-hidden="true"
+                  />
                   <div>
                     <h3 className="font-serif text-xl font-light tracking-[-0.01em] text-charcoal sm:text-2xl">
                       {step.title}
@@ -41,8 +39,7 @@ export function Process() {
                   </div>
                 </li>
               </Reveal>
-            );
-          })}
+            ))}
         </ol>
       </div>
     </Section>
