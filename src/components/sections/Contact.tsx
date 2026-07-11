@@ -128,9 +128,14 @@ export function Contact() {
       <div className="mx-auto max-w-2xl">
         <Reveal>
           {submitted ? (
-            <p className="text-base leading-[1.8] text-ivory/70" role="status">
-              {contactContent.successMessage}
-            </p>
+            <div role="status">
+              <p className="font-serif text-3xl font-light tracking-[-0.02em] text-ivory sm:text-4xl">
+                {contactContent.successTitle}
+              </p>
+              <p className="mt-6 text-base leading-[1.8] text-ivory/70">
+                {contactContent.successMessage}
+              </p>
+            </div>
           ) : (
             <form
               className="space-y-12"
@@ -387,14 +392,25 @@ export function Contact() {
                     }
                   />
                   <span className="text-xs leading-[1.7] text-ivory/40">
-                    I understand my information will be used to prepare my
-                    consultation request.{" "}
+                    I have read and agree to the{" "}
                     <a
                       href="/privacy"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="text-ivory/60 underline decoration-ivory/20 underline-offset-2"
                     >
-                      Privacy
+                      Privacy Policy
+                    </a>{" "}
+                    and{" "}
+                    <a
+                      href="/disclaimer"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-ivory/60 underline decoration-ivory/20 underline-offset-2"
+                    >
+                      Disclaimer
                     </a>
+                    .
                   </span>
                 </label>
                 <FieldError
@@ -408,6 +424,7 @@ export function Contact() {
                   type="submit"
                   size="large"
                   variant="secondary"
+                  disabled={!form.privacyConsent}
                   className="border-ivory/25 text-ivory hover:border-ivory/50 hover:bg-transparent"
                 >
                   {contactContent.submitLabel}

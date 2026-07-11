@@ -2,9 +2,10 @@ export const siteConfig = {
   name: "Habitat Tokyo",
   tagline: "Private Relocation Concierge",
   description:
-    "A private relocation concierge for those building an elegant life in Tokyo.",
+    "Luxury relocation support for international residents moving to Tokyo.",
   url: "https://habitat-japan.com",
   email: "hello@habitat-japan.com",
+  seoTitle: "Habitat Tokyo | Luxury Relocation Concierge",
 };
 
 export const navigation = [
@@ -15,15 +16,10 @@ export const navigation = [
   { label: "Consultation", href: "#contact" },
 ];
 
-export const footerNavigation = [
-  { label: "About", href: "#about" },
-  { label: "Services", href: "#support" },
-  { label: "Our Approach", href: "#process" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Consultation", href: "#contact" },
-  { label: "Privacy", href: "/privacy" },
-  { label: "Terms", href: "/terms" },
-];
+export const footerLegalLinks = [
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Disclaimer", href: "/disclaimer" },
+] as const;
 
 export const heroContent = {
   headline: ["Tokyo can become", "your home."],
@@ -333,8 +329,9 @@ export const bedroomOptions = ["Studio", "1", "2", "3", "4+"] as const;
 
 export const contactContent = {
   submitLabel: "Request Private Consultation",
+  successTitle: "Thank you.",
   successMessage:
-    "Thank you. Your consultation request has been received. We will respond personally within two business days.",
+    "We've received your inquiry. A relocation advisor will contact you within 24 hours.",
   contactMethods: [
     {
       label: "WhatsApp",
@@ -390,5 +387,5 @@ export const legalNotice =
 
 export const footerContent = {
   tagline: "Private relocation concierge for life in Tokyo.",
-  copyright: `© ${new Date().getFullYear()} Habitat Tokyo`,
+  copyright: "© 2026 Habitat Tokyo",
 };

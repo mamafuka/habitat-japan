@@ -16,6 +16,7 @@ interface ButtonProps {
   external?: boolean;
   type?: "button" | "submit";
   onClick?: () => void;
+  disabled?: boolean;
 }
 
 const variantStyles: Record<ButtonVariant, string> = {
@@ -43,6 +44,7 @@ export function Button({
   external = false,
   type = "button",
   onClick,
+  disabled = false,
 }: ButtonProps) {
   const prefersReducedMotion = useReducedMotion();
 
@@ -50,6 +52,7 @@ export function Button({
     "inline-flex items-center justify-center rounded-full font-normal",
     "transition-all duration-700 ease-out",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/60 focus-visible:ring-offset-2 focus-visible:ring-offset-ivory",
+    "disabled:pointer-events-none disabled:opacity-40",
     variantStyles[variant],
     sizeStyles[size],
     className,
@@ -91,6 +94,7 @@ export function Button({
       type={type}
       className={styles}
       onClick={onClick}
+      disabled={disabled}
       {...motionProps}
     >
       {children}
