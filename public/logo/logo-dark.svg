@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 56" fill="none" aria-labelledby="logo-title">
+  <title id="logo-title">Habitat Tokyo</title>
+  <g transform="translate(0 2)">
+    <path d="M9 8V50" stroke="#B8956A" stroke-width="0.9"/>
+    <path d="M6.5 8H11.5" stroke="#B8956A" stroke-width="0.55"/>
+    <path d="M19 8V27" stroke="#B8956A" stroke-width="0.9"/>
+    <path d="M16.5 8H21.5" stroke="#B8956A" stroke-width="0.55"/>
+    <path d="M9 27H37" stroke="#B8956A" stroke-width="0.55"/>
+    <path d="M35 27V50" stroke="#B8956A" stroke-width="0.9"/>
+    <path d="M37 27V29.5" stroke="#B8956A" stroke-width="0.55"/>
+  </g>
+  <line x1="54" y1="8" x2="54" y2="48" stroke="#B8956A" stroke-width="0.5" opacity="0.6"/>
+  <text x="66" y="24" fill="#B8956A" font-family="Georgia, 'Times New Roman', serif" font-size="11" letter-spacing="3.2">HABITAT TOKYO</text>
+  <line x1="66" y1="32" x2="82" y2="32" stroke="#B8956A" stroke-width="0.5" opacity="0.6"/>
+  <text x="66" y="44" fill="#B8956A" font-family="Georgia, 'Times New Roman', serif" font-size="5.5" letter-spacing="2.4" opacity="0.7">PRIVATE RELOCATION CONCIERGE</text>
+</svg>

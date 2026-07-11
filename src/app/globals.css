@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+:root {
+  --color-ivory: #f9f6f1;
+  --color-warm-white: #f4f1eb;
+  --color-stone: #e8e3db;
+  --color-stone-deep: #d5cfc5;
+  --color-stone-muted: #b0a99e;
+  --color-charcoal: #1c1c1c;
+  --color-charcoal-muted: #4d4d4d;
+  --color-charcoal-faint: #7a7a7a;
+  --color-gold: #a68b64;
+  --color-gold-light: #ede8e0;
+  --color-gold-muted: #8f7550;
+  --color-border: #e5e0d8;
+  --color-surface: #f9f6f1;
+  --section-py: clamp(5.5rem, 12vw, 13rem);
+  --content-max: 72rem;
+}
+
+@theme inline {
+  --color-ivory: var(--color-ivory);
+  --color-warm-white: var(--color-warm-white);
+  --color-stone: var(--color-stone);
+  --color-stone-deep: var(--color-stone-deep);
+  --color-stone-muted: var(--color-stone-muted);
+  --color-charcoal: var(--color-charcoal);
+  --color-charcoal-muted: var(--color-charcoal-muted);
+  --color-charcoal-faint: var(--color-charcoal-faint);
+  --color-gold: var(--color-gold);
+  --color-gold-light: var(--color-gold-light);
+  --color-gold-muted: var(--color-gold-muted);
+  --color-border: var(--color-border);
+  --color-surface: var(--color-surface);
+  --font-sans: var(--font-geist-sans);
+  --font-serif: var(--font-cormorant);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-ivory);
+  color: var(--color-charcoal);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: var(--color-gold-light);
+  color: var(--color-charcoal);
+}
+
+:focus-visible {
+  outline: 1px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+.glass-nav {
+  background: rgba(249, 246, 241, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.editorial-rule {
+  height: 1px;
+  width: 2.5rem;
+  background: var(--color-gold);
+  opacity: 0.4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes scroll-cue {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(1rem);
+    opacity: 0.7;
+  }
+}
+
+.hero-image {
+  image-rendering: auto;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
