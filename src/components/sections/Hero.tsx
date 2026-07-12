@@ -1,9 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { HeroArtwork } from "@/components/brand/HeroArtwork";
 import { heroContent } from "@/components/content/site";
 import { Reveal } from "@/components/motion/Reveal";
-import { Button } from "@/components/ui/Button";
 import { useReducedMotion } from "framer-motion";
 
 function ScrollCue() {
@@ -64,17 +64,16 @@ export function Hero() {
         </Reveal>
 
         <Reveal delay={0.5} y={8}>
-          <div className="mt-14 flex flex-col gap-4 sm:mt-16 sm:flex-row sm:items-center sm:gap-6">
-            <Button href={heroContent.primaryCta.href} size="large">
+          <div className="mt-[6.5rem] flex flex-col items-start gap-6 sm:mt-28">
+            <Link href={heroContent.primaryCta.href} className="hero-cta-primary">
               {heroContent.primaryCta.label}
-            </Button>
-            <Button
-              href={heroContent.secondaryCta.href}
-              variant="secondary"
-              size="large"
-            >
-              {heroContent.secondaryCta.label}
-            </Button>
+            </Link>
+            <Link href="#support" className="hero-cta-secondary group">
+              Explore Our Services
+              <span className="hero-cta-secondary-arrow" aria-hidden="true">
+                →
+              </span>
+            </Link>
           </div>
         </Reveal>
       </div>
