@@ -100,6 +100,18 @@ body {
   }
 }
 
+@keyframes hero-breathe {
+  0%,
+  100% {
+    opacity: 0.94;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.012);
+  }
+}
+
 .hero-image {
   image-rendering: auto;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { HeroArtwork } from "@/components/brand/HeroArtwork";
 import { heroContent } from "@/components/content/site";
 import { Reveal } from "@/components/motion/Reveal";
 import { Button } from "@/components/ui/Button";
@@ -80,17 +80,8 @@ export function Hero() {
       </div>
 
       <div className="relative min-h-[46vh] px-8 pb-14 pt-4 sm:min-h-[50vh] lg:min-h-0 lg:px-12 lg:py-12 lg:pl-0">
-        <div className="relative h-full min-h-[46vh] w-full min-w-0 overflow-hidden sm:min-h-[50vh] lg:absolute lg:inset-0 lg:min-h-0">
-          <Image
-            src={heroContent.image}
-            alt={heroContent.imageAlt}
-            fill
-            priority
-            quality={100}
-            sizes="(max-width: 768px) 100vw, 58vw"
-            decoding="sync"
-            className="hero-image object-cover [object-position:55%_40%] lg:[object-position:58%_center]"
-          />
+        <div className="relative h-full min-h-[46vh] w-full min-w-0 sm:min-h-[50vh] lg:absolute lg:inset-0 lg:min-h-0">
+          <HeroArtwork className="lg:min-h-full" />
         </div>
       </div>
 
